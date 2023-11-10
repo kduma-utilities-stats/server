@@ -14,6 +14,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['auth:sanctum'])->scopeBindings()->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::apiResource('meter', \App\Http\Controllers\MeterController::class);
+    Route::apiResource('meter.counter', \App\Http\Controllers\MeterCounterController::class)->only(['index', 'store']);
+    Route::apiResource('counter', \App\Http\Controllers\CounterController::class)->except(['index', 'store']);
+    Route::apiResource('reading', \App\Http\Controllers\ReadingController::class);
+    Route::apiResource('reading.value', \App\Http\Controllers\ReadingValueController::class)->only(['index', 'store']);
+    Route::apiResource('value', \App\Http\Controllers\ValueController::class)->except(['index', 'store']);
 });
+
+
+
