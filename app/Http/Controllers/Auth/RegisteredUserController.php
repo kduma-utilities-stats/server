@@ -40,4 +40,34 @@ class RegisteredUserController extends Controller
 
         return response()->noContent();
     }
+    /**
+     * Handle an incoming registration request.
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function storeApi(Request $request): Response
+    {
+        abort_if(User::count() != 0, 403);
+
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'device_name' => ['required', 'string'],
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        event(new Registered($user));
+
+        $token = $user->createToken($request->get('device_name'))->plainTextToken;
+
+        return response([
+            'token' => $token
+        ]);
+    }
 }

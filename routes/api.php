@@ -26,6 +26,10 @@ Route::scopeBindings()->group(function () {
         ];
     });
 
+    Route::post('/register', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'storeApi'])
+        ->middleware('guest')
+        ->name('register_api');
+
     Route::post('/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'storeApi'])
         ->middleware('guest')
         ->name('login_api');

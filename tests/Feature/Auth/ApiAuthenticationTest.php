@@ -24,6 +24,7 @@ class ApiAuthenticationTest extends TestCase
             ->assertJsonStructure([
                 'token'
             ]);
+        $this->assertDatabaseCount('personal_access_tokens', 1);
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void
@@ -36,6 +37,7 @@ class ApiAuthenticationTest extends TestCase
         ]);
 
         $this->assertGuest();
+        $this->assertDatabaseEmpty('personal_access_tokens');
     }
 
     public function test_users_can_logout(): void
