@@ -16,13 +16,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::scopeBindings()->group(function () {
     Route::get('/status', function (Request $request) {
+        $user = auth()->guard('sanctum')->user();
+
         return [
             'version' => config('app.version', 'develop'),
             'laravel' => app()->version(),
-            'authenticated' => $request->user() !== null,
-            'user' => $request->user() === null
+            'authenticated' => $user !== null,
+            'user' => $user === null
                 ? null
-                : (new \App\Http\Resources\UserResource($request->user()))->toArray($request),
+                : (new \App\Http\Resources\UserResource($user))->toArray($request),
         ];
     });
 
