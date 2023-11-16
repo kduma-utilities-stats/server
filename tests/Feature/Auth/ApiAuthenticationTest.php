@@ -34,10 +34,27 @@ class ApiAuthenticationTest extends TestCase
         $this->post('/api/login', [
             'email' => $user->email,
             'password' => 'wrong-password',
+            'device_name' => 'device_name',
         ]);
 
         $this->assertGuest();
         $this->assertDatabaseEmpty('personal_access_tokens');
+    }
+
+    public function test_user_is_invited_to_register_if_no_user_exists(): void
+    {
+        $user = User::factory()->make();
+
+        $response = $this->postJson('/api/login', [
+            'email' => $user->email,
+            'password' => 'password',
+            'device_name' => 'device_name',
+        ]);
+
+        $this->assertGuest();
+        $this->assertDatabaseEmpty('personal_access_tokens');
+
+        $response->assertConflict();
     }
 
     public function test_users_can_logout(): void
