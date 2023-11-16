@@ -15,6 +15,7 @@ class StoreReadingRequest extends FormRequest
     {
         return [
             'performed_on' => ['nullable', 'date'],
+            'notes' => ['nullable', 'string', 'max:50'],
         ];
     }
 }

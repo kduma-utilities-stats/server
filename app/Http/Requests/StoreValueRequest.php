@@ -17,6 +17,7 @@ class StoreValueRequest extends FormRequest
         return [
             'counter_id' => ['required', 'int', Rule::exists('counters', 'id')], // TODO: Authorize
             'value' => ['required', 'numeric'],
+            'notes' => ['nullable', 'string', 'max:50'],
         ];
     }
 }

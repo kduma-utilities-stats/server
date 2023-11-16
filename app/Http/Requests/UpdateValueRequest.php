@@ -16,6 +16,7 @@ class UpdateValueRequest extends FormRequest
     {
         return [
             'value' => ['sometimes', 'numeric'],
+            'notes' => ['sometimes', 'nullable', 'string', 'max:50'],
         ];
     }
 }

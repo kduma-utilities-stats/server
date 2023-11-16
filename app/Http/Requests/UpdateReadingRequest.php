@@ -15,6 +15,7 @@ class UpdateReadingRequest extends FormRequest
     {
         return [
             'performed_on' => ['sometimes', 'date'],
+            'notes' => ['sometimes', 'nullable', 'string', 'max:50'],
         ];
     }
 }

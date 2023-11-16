@@ -9,7 +9,7 @@ class Reading extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['performed_on'];
+    protected $fillable = ['performed_on', 'notes'];
     protected $casts = [
         'performed_on' => 'datetime',
     ];
@@ -19,6 +19,10 @@ class Reading extends Model
         static::creating(function (Reading $reading) {
             if($reading->performed_on === null) {
                 $reading->performed_on = now();
+            }
+
+            if(!$reading->notes) {
+                $reading->notes = null;
             }
         });
     }

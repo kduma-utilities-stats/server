@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Reading;
+use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
@@ -52,6 +53,7 @@ class ReadingTest extends TestCase
                     'id' => $reading->id,
                     'performed_on' => $reading->performed_on,
                     'user_id' => $reading->user_id,
+                    'notes' => $reading->notes,
                 ])->toArray()
             ]);
     }
@@ -91,6 +93,33 @@ class ReadingTest extends TestCase
                     'id' => $reading->id,
                     'performed_on' => now(),
                     'user_id' => $reading->user_id,
+                    'notes' => null,
+                ]
+            ]);
+    }
+
+    public function test_creating_new_reading_with_notes(): void
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $this->freezeSecond();
+        $response = $this
+            ->postJson('/api/reading', [
+                'performed_on' => now(),
+                'notes' => 'My Notes',
+            ]);
+
+        $reading = Reading::first();
+
+        $response
+            ->assertCreated()
+            ->assertExactJson([
+                'data' => [
+                    'id' => $reading->id,
+                    'performed_on' => now(),
+                    'user_id' => $reading->user_id,
+                    'notes' => 'My Notes',
                 ]
             ]);
     }
@@ -113,6 +142,7 @@ class ReadingTest extends TestCase
                     'id' => $reading->id,
                     'performed_on' => now(),
                     'user_id' => $reading->user_id,
+                    'notes' => $reading->notes,
                 ]
             ]);
     }
@@ -151,6 +181,7 @@ class ReadingTest extends TestCase
                     'id' => $reading->id,
                     'performed_on' => $reading->performed_on,
                     'user_id' => $reading->user_id,
+                    'notes' => $reading->notes,
                 ]
             ]);
     }
@@ -190,7 +221,9 @@ class ReadingTest extends TestCase
 
         $reading = Reading::factory()
             ->recycle($user)
-            ->create();
+            ->create([
+                'notes' => 'My Note'
+            ]);
 
         $this->freezeSecond();
         $response = $this
@@ -205,6 +238,73 @@ class ReadingTest extends TestCase
                     'id' => $reading->id,
                     'performed_on' => now(),
                     'user_id' => $reading->user_id,
+                    'notes' => 'My Note',
+                ]
+            ]);
+    }
+
+    public function test_updating_reading_note(): void
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $reading = Reading::factory()
+            ->recycle($user)
+            ->create([
+                'notes' => 'My Note'
+            ]);
+
+        $this->freezeSecond();
+        $response = $this
+            ->putJson('/api/reading/'.$reading->id, [
+                'notes' => 'My New Note'
+            ]);
+
+        $response
+            ->assertOk()
+            ->assertExactJson([
+                'data' => [
+                    'id' => $reading->id,
+                    'performed_on' => $reading->performed_on,
+                    'user_id' => $reading->user_id,
+                    'notes' => 'My New Note',
+                ]
+            ]);
+    }
+
+    public static function provider_for_test_updating_reading_with_empty_note(): array
+    {
+        return [
+            'null' => [null],
+            'empty string' => ['']
+        ];
+    }
+    #[DataProvider('provider_for_test_updating_reading_with_empty_note')]
+    public function test_updating_reading_with_empty_note(mixed $value): void
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $reading = Reading::factory()
+            ->recycle($user)
+            ->create([
+                'notes' => 'My Note'
+            ]);
+
+        $this->freezeSecond();
+        $response = $this
+            ->putJson('/api/reading/'.$reading->id, [
+                'notes' => $value
+            ]);
+
+        $response
+            ->assertOk()
+            ->assertExactJson([
+                'data' => [
+                    'id' => $reading->id,
+                    'performed_on' => $reading->performed_on,
+                    'user_id' => $reading->user_id,
+                    'notes' => null,
                 ]
             ]);
     }
@@ -230,6 +330,7 @@ class ReadingTest extends TestCase
                     'id' => $reading->id,
                     'performed_on' => $reading->performed_on,
                     'user_id' => $reading->user_id,
+                    'notes' => $reading->notes,
                 ]
             ]);
     }

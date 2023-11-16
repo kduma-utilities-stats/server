@@ -9,7 +9,7 @@ class Value extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['counter_id', 'value'];
+    protected $fillable = ['counter_id', 'value', 'notes'];
 
     public function reading(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
@@ -19,5 +19,14 @@ class Value extends Model
     public function counter(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Counter::class);
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (Value $value) {
+            if(!$value->notes) {
+                $value->notes = null;
+            }
+        });
     }
 }

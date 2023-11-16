@@ -83,6 +83,7 @@ class ReadingValueTest extends TestCase
                     'reading_id' => $value->reading_id,
                     'counter_id' => $value->counter_id,
                     'value' => $value->value,
+                    'notes' => $value->notes,
                 ])->toArray()
             ]);
     }
@@ -134,6 +135,40 @@ class ReadingValueTest extends TestCase
                 'counter_id' => $counter->id,
                 'value' => 1234,
                 'reading_id' => $value->reading_id,
+                'notes' => null,
+            ]]);
+    }
+
+    public function test_creating_new_value_with_notes(): void
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $reading = Reading::factory()
+            ->recycle($user)
+            ->create();
+
+        $counter = Counter::factory()
+            ->recycle($user)
+            ->create();
+
+        $response = $this
+            ->postJson('/api/reading/'.$reading->id.'/value', [
+                'counter_id' => $counter->id,
+                'value' => 1234,
+                'notes' => 'Test Note!',
+            ]);
+
+        $value = Value::first();
+
+        $response
+            ->assertCreated()
+            ->assertExactJson(['data' => [
+                'id' => $value->id,
+                'counter_id' => $counter->id,
+                'value' => 1234,
+                'reading_id' => $value->reading_id,
+                'notes' => 'Test Note!',
             ]]);
     }
 
@@ -178,6 +213,7 @@ class ReadingValueTest extends TestCase
                     'counter_id' => $value->counter_id,
                     'value' => $value->value,
                     'reading_id' => $value->reading_id,
+                    'notes' => $value->notes,
                 ]
             ]);
     }
@@ -216,7 +252,9 @@ class ReadingValueTest extends TestCase
 
         $value = Value::factory()
             ->recycle($user)
-            ->create();
+            ->create([
+                'notes' => 'Test Note!'
+            ]);
 
         $response = $this
             ->putJson('/api/value/'.$value->id, [
@@ -231,6 +269,65 @@ class ReadingValueTest extends TestCase
                     'counter_id' => $value->counter_id,
                     'value' => 666,
                     'reading_id' => $value->reading_id,
+                    'notes' => 'Test Note!',
+                ]
+            ]);
+    }
+
+    public function test_updating_value_notes(): void
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $value = Value::factory()
+            ->recycle($user)
+            ->create();
+
+        $response = $this
+            ->putJson('/api/value/'.$value->id, [
+                'value' => 666,
+                'notes' => 'Test Note!',
+            ]);
+
+        $response
+            ->assertOk()
+            ->assertExactJson([
+                'data' => [
+                    'id' => $value->id,
+                    'counter_id' => $value->counter_id,
+                    'value' => 666,
+                    'reading_id' => $value->reading_id,
+                    'notes' => 'Test Note!',
+                ]
+            ]);
+    }
+
+    public function test_updating_value_empty_notes(): void
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $value = Value::factory()
+            ->recycle($user)
+            ->create([
+                'notes' => 'Test Note!',
+            ]);
+
+        $response = $this
+            ->putJson('/api/value/'.$value->id, [
+                'value' => 666,
+                'notes' => null,
+            ]);
+
+        $response
+            ->assertOk()
+            ->assertExactJson([
+                'data' => [
+                    'id' => $value->id,
+                    'counter_id' => $value->counter_id,
+                    'value' => 666,
+                    'reading_id' => $value->reading_id,
+                    'notes' => null,
                 ]
             ]);
     }
@@ -257,6 +354,7 @@ class ReadingValueTest extends TestCase
                     'counter_id' => $value->counter_id,
                     'value' => $value->value,
                     'reading_id' => $value->reading_id,
+                    'notes' => $value->notes,
                 ]
             ]);
     }

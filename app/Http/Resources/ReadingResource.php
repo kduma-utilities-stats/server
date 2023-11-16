@@ -18,6 +18,7 @@ class ReadingResource extends JsonResource
             'id' => $this->id,
             'user_id' => $this->user_id,
             'performed_on' => $this->performed_on,
+            'notes' => $this->notes,
         ];
     }
 }

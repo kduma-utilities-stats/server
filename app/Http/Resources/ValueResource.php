@@ -19,6 +19,7 @@ class ValueResource extends JsonResource
             'reading_id' => $this->reading_id,
             'counter_id' => $this->counter_id,
             'value' => $this->value,
+            'notes' => $this->notes,
         ];
     }
 }

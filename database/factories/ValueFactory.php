@@ -23,6 +23,7 @@ class ValueFactory extends Factory
             'reading_id' => Reading::factory(),
             'counter_id' => Counter::factory(),
             'value' => $this->faker->numberBetween(0, 999999999999)/10000,
+            'notes' => $this->faker->company,
         ];
     }
 }
