@@ -25,6 +25,14 @@ Route::scopeBindings()->group(function () {
                 : (new \App\Http\Resources\UserResource($request->user()))->toArray($request),
         ];
     });
+
+    Route::post('/login', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'storeApi'])
+        ->middleware('guest')
+        ->name('login_api');
+
+    Route::post('/logout', [\App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroyApi'])
+        ->middleware('auth:sanctum')
+        ->name('logout_api');
 });
 
 Route::middleware(['auth:sanctum'])->scopeBindings()->group(function () {
