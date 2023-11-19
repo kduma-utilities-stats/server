@@ -51,7 +51,7 @@ class MeterTest extends TestCase
                 'data' => $meters->map(fn(Meter $meter) => [
                     'id' => $meter->prefixed_id,
                     'name' => $meter->name,
-                    'user_id' => $meter->user_id,
+                    'user_id' => $meter->user->prefixed_id,
                 ])->toArray()
             ]);
     }
@@ -90,7 +90,7 @@ class MeterTest extends TestCase
                 'data' => [
                     'id' => $meter->prefixed_id,
                     'name' => 'Test Meter',
-                    'user_id' => $meter->user_id,
+                    'user_id' => $meter->user->prefixed_id,
                 ]
             ]);
     }
@@ -126,7 +126,7 @@ class MeterTest extends TestCase
                 'data' => [
                     'id' => $meter->prefixed_id,
                     'name' => $meter->name,
-                    'user_id' => $meter->user_id,
+                    'user_id' => $meter->user->prefixed_id,
                 ]
             ]);
     }
@@ -179,7 +179,7 @@ class MeterTest extends TestCase
                 'data' => [
                     'id' => $meter->prefixed_id,
                     'name' => 'New Name',
-                    'user_id' => $meter->user_id,
+                    'user_id' => $meter->user->prefixed_id,
                 ]
             ]);
     }
@@ -204,7 +204,7 @@ class MeterTest extends TestCase
                 'data' => [
                     'id' => $meter->prefixed_id,
                     'name' => $meter->name,
-                    'user_id' => $meter->user_id,
+                    'user_id' => $meter->user->prefixed_id,
                 ]
             ]);
     }

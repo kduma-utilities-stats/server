@@ -17,7 +17,7 @@ class MeterResource extends JsonResource
         return [
             'id' => $this->prefixed_id,
             'name' => $this->name,
-            'user_id' => $this->user_id,
+            'user_id' => $this->user->prefixed_id,
         ];
     }
 }
