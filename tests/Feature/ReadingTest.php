@@ -52,7 +52,7 @@ class ReadingTest extends TestCase
                 'data' => $readings->map(fn(Reading $reading) => [
                     'id' => $reading->prefixed_id,
                     'performed_on' => $reading->performed_on,
-                    'user_id' => $reading->user_id,
+                    'user_id' => $reading->user->prefixed_id,
                     'notes' => $reading->notes,
                 ])->toArray()
             ]);
@@ -92,7 +92,7 @@ class ReadingTest extends TestCase
                 'data' => [
                     'id' => $reading->prefixed_id,
                     'performed_on' => now(),
-                    'user_id' => $reading->user_id,
+                    'user_id' => $reading->user->prefixed_id,
                     'notes' => null,
                 ]
             ]);
@@ -118,7 +118,7 @@ class ReadingTest extends TestCase
                 'data' => [
                     'id' => $reading->prefixed_id,
                     'performed_on' => now(),
-                    'user_id' => $reading->user_id,
+                    'user_id' => $reading->user->prefixed_id,
                     'notes' => 'My Notes',
                 ]
             ]);
@@ -141,7 +141,7 @@ class ReadingTest extends TestCase
                 'data' => [
                     'id' => $reading->prefixed_id,
                     'performed_on' => now(),
-                    'user_id' => $reading->user_id,
+                    'user_id' => $reading->user->prefixed_id,
                     'notes' => $reading->notes,
                 ]
             ]);
@@ -180,7 +180,7 @@ class ReadingTest extends TestCase
                 'data' => [
                     'id' => $reading->prefixed_id,
                     'performed_on' => $reading->performed_on,
-                    'user_id' => $reading->user_id,
+                    'user_id' => $reading->user->prefixed_id,
                     'notes' => $reading->notes,
                 ]
             ]);
@@ -237,7 +237,7 @@ class ReadingTest extends TestCase
                 'data' => [
                     'id' => $reading->prefixed_id,
                     'performed_on' => now(),
-                    'user_id' => $reading->user_id,
+                    'user_id' => $reading->user->prefixed_id,
                     'notes' => 'My Note',
                 ]
             ]);
@@ -266,7 +266,7 @@ class ReadingTest extends TestCase
                 'data' => [
                     'id' => $reading->prefixed_id,
                     'performed_on' => $reading->performed_on,
-                    'user_id' => $reading->user_id,
+                    'user_id' => $reading->user->prefixed_id,
                     'notes' => 'My New Note',
                 ]
             ]);
@@ -303,7 +303,7 @@ class ReadingTest extends TestCase
                 'data' => [
                     'id' => $reading->prefixed_id,
                     'performed_on' => $reading->performed_on,
-                    'user_id' => $reading->user_id,
+                    'user_id' => $reading->user->prefixed_id,
                     'notes' => null,
                 ]
             ]);
@@ -329,7 +329,7 @@ class ReadingTest extends TestCase
                 'data' => [
                     'id' => $reading->prefixed_id,
                     'performed_on' => $reading->performed_on,
-                    'user_id' => $reading->user_id,
+                    'user_id' => $reading->user->prefixed_id,
                     'notes' => $reading->notes,
                 ]
             ]);

@@ -18,7 +18,7 @@ class CounterResource extends JsonResource
             'id' => $this->prefixed_id,
             'name' => $this->name,
             'barcode' => $this->barcode,
-            'meter_id' => $this->meter_id,
+            'meter_id' => $this->meter->prefixed_id,
         ];
     }
 }
