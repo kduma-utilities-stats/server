@@ -4,15 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\PrefixedIds\Models\Concerns\HasPrefixedId;
 
 class Reading extends Model
 {
-    use HasFactory;
+    use HasFactory, HasPrefixedId;
 
     protected $fillable = ['performed_on', 'notes'];
     protected $casts = [
         'performed_on' => 'datetime',
     ];
+
+    public function getRouteKeyName(): string
+    {
+        return 'prefixed_id';
+    }
 
     protected static function booted(): void
     {

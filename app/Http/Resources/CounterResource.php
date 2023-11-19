@@ -15,7 +15,7 @@ class CounterResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
+            'id' => $this->prefixed_id,
             'name' => $this->name,
             'barcode' => $this->barcode,
             'meter_id' => $this->meter_id,

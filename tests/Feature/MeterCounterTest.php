@@ -19,7 +19,7 @@ class MeterCounterTest extends TestCase
             ->create();
 
         $response = $this
-            ->getJson('/api/meter/'.$meter->id.'/counter');
+            ->getJson('/api/meter/'.$meter->prefixed_id.'/counter');
 
         $response->assertUnauthorized();
     }
@@ -34,7 +34,7 @@ class MeterCounterTest extends TestCase
             ->create();
 
         $response = $this
-            ->getJson('/api/meter/'.$meter->id.'/counter');
+            ->getJson('/api/meter/'.$meter->prefixed_id.'/counter');
 
         $response
             ->assertOk()
@@ -52,7 +52,7 @@ class MeterCounterTest extends TestCase
             ->create();
 
         $response = $this
-            ->getJson('/api/meter/'.$meter->id.'/counter');
+            ->getJson('/api/meter/'.$meter->prefixed_id.'/counter');
 
         $response
             ->assertForbidden();
@@ -72,13 +72,13 @@ class MeterCounterTest extends TestCase
             ->create();
 
         $response = $this
-            ->getJson('/api/meter/'.$meter->id.'/counter');
+            ->getJson('/api/meter/'.$meter->prefixed_id.'/counter');
 
         $response
             ->assertOk()
             ->assertExactJson([
                 'data' => $counters->map(fn(Counter $counter) => [
-                    'id' => $counter->id,
+                    'id' => $counter->prefixed_id,
                     'name' => $counter->name,
                     'barcode' => $counter->barcode,
                     'meter_id' => $counter->meter_id,
@@ -98,7 +98,7 @@ class MeterCounterTest extends TestCase
         $counter = Counter::factory()->create();
 
         $response = $this
-            ->getJson('/api/meter/'.$meter->id.'/counter');
+            ->getJson('/api/meter/'.$meter->prefixed_id.'/counter');
 
         $response
             ->assertOk()
@@ -115,7 +115,7 @@ class MeterCounterTest extends TestCase
             ->create();
 
         $response = $this
-            ->postJson('/api/meter/'.$meter->id.'/counter', [
+            ->postJson('/api/meter/'.$meter->prefixed_id.'/counter', [
                 'name' => 'Test Counter',
                 'barcode' => '1234',
             ]);
@@ -125,7 +125,7 @@ class MeterCounterTest extends TestCase
         $response
             ->assertCreated()
             ->assertExactJson(['data' => [
-                'id' => $counter->id,
+                'id' => $counter->prefixed_id,
                 'name' => 'Test Counter',
                 'barcode' => '1234',
                 'meter_id' => $counter->meter_id,
@@ -142,7 +142,7 @@ class MeterCounterTest extends TestCase
 //            ->create();
 //
 //        $response = $this
-//            ->postJson('/api/meter/'.$meter->id.'/counter', [
+//            ->postJson('/api/meter/'.$meter->prefixed_id.'/counter', [
 //                'name' => '',
 //                'barcode' => '',
 //            ]);
@@ -162,13 +162,13 @@ class MeterCounterTest extends TestCase
             ->create();
 
         $response = $this
-            ->getJson('/api/counter/'.$counter->id);
+            ->getJson('/api/counter/'.$counter->prefixed_id);
 
         $response
             ->assertOk()
             ->assertExactJson([
                 'data' => [
-                    'id' => $counter->id,
+                    'id' => $counter->prefixed_id,
                     'name' => $counter->name,
                     'barcode' => $counter->barcode,
                     'meter_id' => $counter->meter_id,
@@ -185,7 +185,7 @@ class MeterCounterTest extends TestCase
             ->create();
 
         $response = $this
-            ->getJson('/api/counter/'.$counter->id);
+            ->getJson('/api/counter/'.$counter->prefixed_id);
 
         $response
             ->assertForbidden();
@@ -213,7 +213,7 @@ class MeterCounterTest extends TestCase
             ->create();
 
         $response = $this
-            ->putJson('/api/counter/'.$counter->id, [
+            ->putJson('/api/counter/'.$counter->prefixed_id, [
                 'name' => 'New Name'
             ]);
 
@@ -221,7 +221,7 @@ class MeterCounterTest extends TestCase
             ->assertOk()
             ->assertExactJson([
                 'data' => [
-                    'id' => $counter->id,
+                    'id' => $counter->prefixed_id,
                     'name' => 'New Name',
                     'barcode' => $counter->barcode,
                     'meter_id' => $counter->meter_id,
@@ -239,7 +239,7 @@ class MeterCounterTest extends TestCase
             ->create();
 
         $response = $this
-            ->putJson('/api/counter/'.$counter->id, [
+            ->putJson('/api/counter/'.$counter->prefixed_id, [
 
             ]);
 
@@ -247,7 +247,7 @@ class MeterCounterTest extends TestCase
             ->assertOk()
             ->assertExactJson([
                 'data' => [
-                    'id' => $counter->id,
+                    'id' => $counter->prefixed_id,
                     'name' => $counter->name,
                     'barcode' => $counter->barcode,
                     'meter_id' => $counter->meter_id,
@@ -265,7 +265,7 @@ class MeterCounterTest extends TestCase
 //            ->create();
 //
 //        $response = $this
-//            ->putJson('/api/counter/'.$counter->id, [
+//            ->putJson('/api/counter/'.$counter->prefixed_id, [
 //                'name' => '',
 //                'barcode' => ''
 //            ]);
@@ -284,7 +284,7 @@ class MeterCounterTest extends TestCase
             ->create();
 
         $response = $this
-            ->putJson('/api/counter/'.$counter->id, [
+            ->putJson('/api/counter/'.$counter->prefixed_id, [
                 'name' => 'New Name'
             ]);
 
@@ -302,13 +302,13 @@ class MeterCounterTest extends TestCase
             ->create();
 
         $response = $this
-            ->deleteJson('/api/counter/'.$counter->id);
+            ->deleteJson('/api/counter/'.$counter->prefixed_id);
 
         $response
             ->assertNoContent();
 
         $this->assertDatabaseMissing('counters', [
-            'id' => $counter->id,
+            'id' => $counter->prefixed_id,
         ]);
     }
 
@@ -321,7 +321,7 @@ class MeterCounterTest extends TestCase
             ->create();
 
         $response = $this
-            ->deleteJson('/api/counter/'.$counter->id);
+            ->deleteJson('/api/counter/'.$counter->prefixed_id);
 
         $response
             ->assertForbidden();

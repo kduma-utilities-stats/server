@@ -15,7 +15,7 @@ class ReadingResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
+            'id' => $this->prefixed_id,
             'user_id' => $this->user_id,
             'performed_on' => $this->performed_on,
             'notes' => $this->notes,

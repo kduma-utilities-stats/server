@@ -15,9 +15,9 @@ class ValueResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'id' => $this->id,
-            'reading_id' => $this->reading_id,
-            'counter_id' => $this->counter_id,
+            'id' => $this->prefixed_id,
+            'reading_id' => $this->reading->prefixed_id,
+            'counter_id' => $this->counter->prefixed_id,
             'value' => $this->value,
             'notes' => $this->notes,
         ];

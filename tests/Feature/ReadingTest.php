@@ -50,7 +50,7 @@ class ReadingTest extends TestCase
             ->assertOk()
             ->assertExactJson([
                 'data' => $readings->map(fn(Reading $reading) => [
-                    'id' => $reading->id,
+                    'id' => $reading->prefixed_id,
                     'performed_on' => $reading->performed_on,
                     'user_id' => $reading->user_id,
                     'notes' => $reading->notes,
@@ -90,7 +90,7 @@ class ReadingTest extends TestCase
             ->assertCreated()
             ->assertExactJson([
                 'data' => [
-                    'id' => $reading->id,
+                    'id' => $reading->prefixed_id,
                     'performed_on' => now(),
                     'user_id' => $reading->user_id,
                     'notes' => null,
@@ -116,7 +116,7 @@ class ReadingTest extends TestCase
             ->assertCreated()
             ->assertExactJson([
                 'data' => [
-                    'id' => $reading->id,
+                    'id' => $reading->prefixed_id,
                     'performed_on' => now(),
                     'user_id' => $reading->user_id,
                     'notes' => 'My Notes',
@@ -139,7 +139,7 @@ class ReadingTest extends TestCase
             ->assertCreated()
             ->assertExactJson([
                 'data' => [
-                    'id' => $reading->id,
+                    'id' => $reading->prefixed_id,
                     'performed_on' => now(),
                     'user_id' => $reading->user_id,
                     'notes' => $reading->notes,
@@ -172,13 +172,13 @@ class ReadingTest extends TestCase
             ->create();
 
         $response = $this
-            ->getJson('/api/reading/'.$reading->id);
+            ->getJson('/api/reading/'.$reading->prefixed_id);
 
         $response
             ->assertOk()
             ->assertExactJson([
                 'data' => [
-                    'id' => $reading->id,
+                    'id' => $reading->prefixed_id,
                     'performed_on' => $reading->performed_on,
                     'user_id' => $reading->user_id,
                     'notes' => $reading->notes,
@@ -196,7 +196,7 @@ class ReadingTest extends TestCase
 
 
         $response = $this
-            ->getJson('/api/reading/'.$reading->id);
+            ->getJson('/api/reading/'.$reading->prefixed_id);
 
         $response
             ->assertForbidden();
@@ -227,7 +227,7 @@ class ReadingTest extends TestCase
 
         $this->freezeSecond();
         $response = $this
-            ->putJson('/api/reading/'.$reading->id, [
+            ->putJson('/api/reading/'.$reading->prefixed_id, [
                 'performed_on' => now()
             ]);
 
@@ -235,7 +235,7 @@ class ReadingTest extends TestCase
             ->assertOk()
             ->assertExactJson([
                 'data' => [
-                    'id' => $reading->id,
+                    'id' => $reading->prefixed_id,
                     'performed_on' => now(),
                     'user_id' => $reading->user_id,
                     'notes' => 'My Note',
@@ -256,7 +256,7 @@ class ReadingTest extends TestCase
 
         $this->freezeSecond();
         $response = $this
-            ->putJson('/api/reading/'.$reading->id, [
+            ->putJson('/api/reading/'.$reading->prefixed_id, [
                 'notes' => 'My New Note'
             ]);
 
@@ -264,7 +264,7 @@ class ReadingTest extends TestCase
             ->assertOk()
             ->assertExactJson([
                 'data' => [
-                    'id' => $reading->id,
+                    'id' => $reading->prefixed_id,
                     'performed_on' => $reading->performed_on,
                     'user_id' => $reading->user_id,
                     'notes' => 'My New Note',
@@ -293,7 +293,7 @@ class ReadingTest extends TestCase
 
         $this->freezeSecond();
         $response = $this
-            ->putJson('/api/reading/'.$reading->id, [
+            ->putJson('/api/reading/'.$reading->prefixed_id, [
                 'notes' => $value
             ]);
 
@@ -301,7 +301,7 @@ class ReadingTest extends TestCase
             ->assertOk()
             ->assertExactJson([
                 'data' => [
-                    'id' => $reading->id,
+                    'id' => $reading->prefixed_id,
                     'performed_on' => $reading->performed_on,
                     'user_id' => $reading->user_id,
                     'notes' => null,
@@ -319,7 +319,7 @@ class ReadingTest extends TestCase
             ->create();
 
         $response = $this
-            ->putJson('/api/reading/'.$reading->id, [
+            ->putJson('/api/reading/'.$reading->prefixed_id, [
 
             ]);
 
@@ -327,7 +327,7 @@ class ReadingTest extends TestCase
             ->assertOk()
             ->assertExactJson([
                 'data' => [
-                    'id' => $reading->id,
+                    'id' => $reading->prefixed_id,
                     'performed_on' => $reading->performed_on,
                     'user_id' => $reading->user_id,
                     'notes' => $reading->notes,
@@ -345,7 +345,7 @@ class ReadingTest extends TestCase
             ->create();
 
         $response = $this
-            ->putJson('/api/reading/'.$reading->id, [
+            ->putJson('/api/reading/'.$reading->prefixed_id, [
                 'performed_on' => 'New Name'
             ]);
 
@@ -363,7 +363,7 @@ class ReadingTest extends TestCase
             ->create();
 
         $response = $this
-            ->putJson('/api/reading/'.$reading->id, [
+            ->putJson('/api/reading/'.$reading->prefixed_id, [
                 'performed_on' => now()
             ]);
 
@@ -381,13 +381,13 @@ class ReadingTest extends TestCase
             ->create();
 
         $response = $this
-            ->deleteJson('/api/reading/'.$reading->id);
+            ->deleteJson('/api/reading/'.$reading->prefixed_id);
 
         $response
             ->assertNoContent();
 
         $this->assertDatabaseMissing('readings', [
-            'id' => $reading->id,
+            'id' => $reading->prefixed_id,
         ]);
     }
 
@@ -400,7 +400,7 @@ class ReadingTest extends TestCase
             ->create();
 
         $response = $this
-            ->deleteJson('/api/reading/'.$reading->id);
+            ->deleteJson('/api/reading/'.$reading->prefixed_id);
 
         $response
             ->assertForbidden();

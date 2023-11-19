@@ -20,7 +20,7 @@ class ReadingValueTest extends TestCase
             ->create();
 
         $response = $this
-            ->getJson('/api/reading/'.$reading->id.'/value');
+            ->getJson('/api/reading/'.$reading->prefixed_id.'/value');
 
         $response->assertUnauthorized();
     }
@@ -35,7 +35,7 @@ class ReadingValueTest extends TestCase
             ->create();
 
         $response = $this
-            ->getJson('/api/reading/'.$reading->id.'/value');
+            ->getJson('/api/reading/'.$reading->prefixed_id.'/value');
 
         $response
             ->assertOk()
@@ -53,7 +53,7 @@ class ReadingValueTest extends TestCase
             ->create();
 
         $response = $this
-            ->getJson('/api/reading/'.$reading->id.'/value');
+            ->getJson('/api/reading/'.$reading->prefixed_id.'/value');
 
         $response
             ->assertForbidden();
@@ -73,15 +73,15 @@ class ReadingValueTest extends TestCase
             ->create();
 
         $response = $this
-            ->getJson('/api/reading/'.$reading->id.'/value');
+            ->getJson('/api/reading/'.$reading->prefixed_id.'/value');
 
         $response
             ->assertOk()
             ->assertExactJson([
                 'data' => $values->map(fn(Value $value) => [
-                    'id' => $value->id,
-                    'reading_id' => $value->reading_id,
-                    'counter_id' => $value->counter_id,
+                    'id' => $value->prefixed_id,
+                    'reading_id' => $value->reading->prefixed_id,
+                    'counter_id' => $value->counter->prefixed_id,
                     'value' => $value->value,
                     'notes' => $value->notes,
                 ])->toArray()
@@ -100,7 +100,7 @@ class ReadingValueTest extends TestCase
         $value = Value::factory()->create();
 
         $response = $this
-            ->getJson('/api/reading/'.$reading->id.'/value');
+            ->getJson('/api/reading/'.$reading->prefixed_id.'/value');
 
         $response
             ->assertOk()
@@ -121,8 +121,8 @@ class ReadingValueTest extends TestCase
             ->create();
 
         $response = $this
-            ->postJson('/api/reading/'.$reading->id.'/value', [
-                'counter_id' => $counter->id,
+            ->postJson('/api/reading/'.$reading->prefixed_id.'/value', [
+                'counter_id' => $counter->prefixed_id,
                 'value' => 1234,
             ]);
 
@@ -131,10 +131,10 @@ class ReadingValueTest extends TestCase
         $response
             ->assertCreated()
             ->assertExactJson(['data' => [
-                'id' => $value->id,
-                'counter_id' => $counter->id,
+                'id' => $value->prefixed_id,
+                'counter_id' => $counter->prefixed_id,
                 'value' => 1234,
-                'reading_id' => $value->reading_id,
+                'reading_id' => $value->reading->prefixed_id,
                 'notes' => null,
             ]]);
     }
@@ -153,8 +153,8 @@ class ReadingValueTest extends TestCase
             ->create();
 
         $response = $this
-            ->postJson('/api/reading/'.$reading->id.'/value', [
-                'counter_id' => $counter->id,
+            ->postJson('/api/reading/'.$reading->prefixed_id.'/value', [
+                'counter_id' => $counter->prefixed_id,
                 'value' => 1234,
                 'notes' => 'Test Note!',
             ]);
@@ -164,10 +164,10 @@ class ReadingValueTest extends TestCase
         $response
             ->assertCreated()
             ->assertExactJson(['data' => [
-                'id' => $value->id,
-                'counter_id' => $counter->id,
+                'id' => $value->prefixed_id,
+                'counter_id' => $counter->prefixed_id,
                 'value' => 1234,
-                'reading_id' => $value->reading_id,
+                'reading_id' => $value->reading->prefixed_id,
                 'notes' => 'Test Note!',
             ]]);
     }
@@ -182,7 +182,7 @@ class ReadingValueTest extends TestCase
             ->create();
 
         $response = $this
-            ->postJson('/api/reading/'.$reading->id.'/value', [
+            ->postJson('/api/reading/'.$reading->prefixed_id.'/value', [
                 'counter_id' => '',
                 'value' => '',
             ]);
@@ -203,16 +203,16 @@ class ReadingValueTest extends TestCase
             ->create();
 
         $response = $this
-            ->getJson('/api/value/'.$value->id);
+            ->getJson('/api/value/'.$value->prefixed_id);
 
         $response
             ->assertOk()
             ->assertExactJson([
                 'data' => [
-                    'id' => $value->id,
-                    'counter_id' => $value->counter_id,
+                    'id' => $value->prefixed_id,
+                    'counter_id' => $value->counter->prefixed_id,
                     'value' => $value->value,
-                    'reading_id' => $value->reading_id,
+                    'reading_id' => $value->reading->prefixed_id,
                     'notes' => $value->notes,
                 ]
             ]);
@@ -227,7 +227,7 @@ class ReadingValueTest extends TestCase
             ->create();
 
         $response = $this
-            ->getJson('/api/value/'.$value->id);
+            ->getJson('/api/value/'.$value->prefixed_id);
 
         $response
             ->assertForbidden();
@@ -257,7 +257,7 @@ class ReadingValueTest extends TestCase
             ]);
 
         $response = $this
-            ->putJson('/api/value/'.$value->id, [
+            ->putJson('/api/value/'.$value->prefixed_id, [
                 'value' => 666
             ]);
 
@@ -265,10 +265,10 @@ class ReadingValueTest extends TestCase
             ->assertOk()
             ->assertExactJson([
                 'data' => [
-                    'id' => $value->id,
-                    'counter_id' => $value->counter_id,
+                    'id' => $value->prefixed_id,
+                    'counter_id' => $value->counter->prefixed_id,
                     'value' => 666,
-                    'reading_id' => $value->reading_id,
+                    'reading_id' => $value->reading->prefixed_id,
                     'notes' => 'Test Note!',
                 ]
             ]);
@@ -284,7 +284,7 @@ class ReadingValueTest extends TestCase
             ->create();
 
         $response = $this
-            ->putJson('/api/value/'.$value->id, [
+            ->putJson('/api/value/'.$value->prefixed_id, [
                 'value' => 666,
                 'notes' => 'Test Note!',
             ]);
@@ -293,10 +293,10 @@ class ReadingValueTest extends TestCase
             ->assertOk()
             ->assertExactJson([
                 'data' => [
-                    'id' => $value->id,
-                    'counter_id' => $value->counter_id,
+                    'id' => $value->prefixed_id,
+                    'counter_id' => $value->counter->prefixed_id,
                     'value' => 666,
-                    'reading_id' => $value->reading_id,
+                    'reading_id' => $value->reading->prefixed_id,
                     'notes' => 'Test Note!',
                 ]
             ]);
@@ -314,7 +314,7 @@ class ReadingValueTest extends TestCase
             ]);
 
         $response = $this
-            ->putJson('/api/value/'.$value->id, [
+            ->putJson('/api/value/'.$value->prefixed_id, [
                 'value' => 666,
                 'notes' => null,
             ]);
@@ -323,10 +323,10 @@ class ReadingValueTest extends TestCase
             ->assertOk()
             ->assertExactJson([
                 'data' => [
-                    'id' => $value->id,
-                    'counter_id' => $value->counter_id,
+                    'id' => $value->prefixed_id,
+                    'counter_id' => $value->counter->prefixed_id,
                     'value' => 666,
-                    'reading_id' => $value->reading_id,
+                    'reading_id' => $value->reading->prefixed_id,
                     'notes' => null,
                 ]
             ]);
@@ -342,7 +342,7 @@ class ReadingValueTest extends TestCase
             ->create();
 
         $response = $this
-            ->putJson('/api/value/'.$value->id, [
+            ->putJson('/api/value/'.$value->prefixed_id, [
 
             ]);
 
@@ -350,10 +350,10 @@ class ReadingValueTest extends TestCase
             ->assertOk()
             ->assertExactJson([
                 'data' => [
-                    'id' => $value->id,
-                    'counter_id' => $value->counter_id,
+                    'id' => $value->prefixed_id,
+                    'counter_id' => $value->counter->prefixed_id,
                     'value' => $value->value,
-                    'reading_id' => $value->reading_id,
+                    'reading_id' => $value->reading->prefixed_id,
                     'notes' => $value->notes,
                 ]
             ]);
@@ -369,7 +369,7 @@ class ReadingValueTest extends TestCase
             ->create();
 
         $response = $this
-            ->putJson('/api/value/'.$value->id, [
+            ->putJson('/api/value/'.$value->prefixed_id, [
                 'value' => ''
             ]);
 
@@ -387,7 +387,7 @@ class ReadingValueTest extends TestCase
             ->create();
 
         $response = $this
-            ->putJson('/api/value/'.$value->id, [
+            ->putJson('/api/value/'.$value->prefixed_id, [
                 'value' => 222
             ]);
 
@@ -405,13 +405,13 @@ class ReadingValueTest extends TestCase
             ->create();
 
         $response = $this
-            ->deleteJson('/api/value/'.$value->id);
+            ->deleteJson('/api/value/'.$value->prefixed_id);
 
         $response
             ->assertNoContent();
 
         $this->assertDatabaseMissing('values', [
-            'id' => $value->id,
+            'id' => $value->prefixed_id,
         ]);
     }
 
@@ -424,7 +424,7 @@ class ReadingValueTest extends TestCase
             ->create();
 
         $response = $this
-            ->deleteJson('/api/value/'.$value->id);
+            ->deleteJson('/api/value/'.$value->prefixed_id);
 
         $response
             ->assertForbidden();

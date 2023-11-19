@@ -36,7 +36,7 @@ class StatusTest extends TestCase
                 'laravel' => app()->version(),
                 'authenticated' => true,
                 'user' => [
-                    'id' => $user->id,
+                    'id' => $user->prefixed_id,
                     'name' => $user->name,
                     'email' => $user->email,
                 ],

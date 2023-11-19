@@ -49,7 +49,7 @@ class MeterTest extends TestCase
             ->assertOk()
             ->assertExactJson([
                 'data' => $meters->map(fn(Meter $meter) => [
-                    'id' => $meter->id,
+                    'id' => $meter->prefixed_id,
                     'name' => $meter->name,
                     'user_id' => $meter->user_id,
                 ])->toArray()
@@ -88,7 +88,7 @@ class MeterTest extends TestCase
             ->assertCreated()
             ->assertExactJson([
                 'data' => [
-                    'id' => $meter->id,
+                    'id' => $meter->prefixed_id,
                     'name' => 'Test Meter',
                     'user_id' => $meter->user_id,
                 ]
@@ -118,13 +118,13 @@ class MeterTest extends TestCase
             ->create();
 
         $response = $this
-            ->getJson('/api/meter/'.$meter->id);
+            ->getJson('/api/meter/'.$meter->prefixed_id);
 
         $response
             ->assertOk()
             ->assertExactJson([
                 'data' => [
-                    'id' => $meter->id,
+                    'id' => $meter->prefixed_id,
                     'name' => $meter->name,
                     'user_id' => $meter->user_id,
                 ]
@@ -141,7 +141,7 @@ class MeterTest extends TestCase
 
 
         $response = $this
-            ->getJson('/api/meter/'.$meter->id);
+            ->getJson('/api/meter/'.$meter->prefixed_id);
 
         $response
             ->assertForbidden();
@@ -169,7 +169,7 @@ class MeterTest extends TestCase
             ->create();
 
         $response = $this
-            ->putJson('/api/meter/'.$meter->id, [
+            ->putJson('/api/meter/'.$meter->prefixed_id, [
                 'name' => 'New Name'
             ]);
 
@@ -177,7 +177,7 @@ class MeterTest extends TestCase
             ->assertOk()
             ->assertExactJson([
                 'data' => [
-                    'id' => $meter->id,
+                    'id' => $meter->prefixed_id,
                     'name' => 'New Name',
                     'user_id' => $meter->user_id,
                 ]
@@ -194,7 +194,7 @@ class MeterTest extends TestCase
             ->create();
 
         $response = $this
-            ->putJson('/api/meter/'.$meter->id, [
+            ->putJson('/api/meter/'.$meter->prefixed_id, [
 
             ]);
 
@@ -202,7 +202,7 @@ class MeterTest extends TestCase
             ->assertOk()
             ->assertExactJson([
                 'data' => [
-                    'id' => $meter->id,
+                    'id' => $meter->prefixed_id,
                     'name' => $meter->name,
                     'user_id' => $meter->user_id,
                 ]
@@ -219,7 +219,7 @@ class MeterTest extends TestCase
             ->create();
 
         $response = $this
-            ->putJson('/api/meter/'.$meter->id, [
+            ->putJson('/api/meter/'.$meter->prefixed_id, [
                 'name' => ''
             ]);
 
@@ -237,7 +237,7 @@ class MeterTest extends TestCase
             ->create();
 
         $response = $this
-            ->putJson('/api/meter/'.$meter->id, [
+            ->putJson('/api/meter/'.$meter->prefixed_id, [
                 'name' => 'New Name'
             ]);
 
@@ -255,13 +255,13 @@ class MeterTest extends TestCase
             ->create();
 
         $response = $this
-            ->deleteJson('/api/meter/'.$meter->id);
+            ->deleteJson('/api/meter/'.$meter->prefixed_id);
 
         $response
             ->assertNoContent();
 
         $this->assertDatabaseMissing('meters', [
-            'id' => $meter->id,
+            'prefixed_id' => $meter->prefixed_id,
         ]);
     }
 
@@ -274,7 +274,7 @@ class MeterTest extends TestCase
             ->create();
 
         $response = $this
-            ->deleteJson('/api/meter/'.$meter->id);
+            ->deleteJson('/api/meter/'.$meter->prefixed_id);
 
         $response
             ->assertForbidden();
