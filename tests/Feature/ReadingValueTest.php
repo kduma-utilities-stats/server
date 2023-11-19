@@ -411,7 +411,7 @@ class ReadingValueTest extends TestCase
             ->assertNoContent();
 
         $this->assertDatabaseMissing('values', [
-            'id' => $value->prefixed_id,
+            'prefixed_id' => $value->prefixed_id,
         ]);
     }
 

@@ -57,6 +57,8 @@ class ReadingController extends Controller
      */
     public function destroy(Reading $reading)
     {
+        abort_if($reading->values()->count(), 406);
+
         $reading->delete();
 
         return response()->noContent();

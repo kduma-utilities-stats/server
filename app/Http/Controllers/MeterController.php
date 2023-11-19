@@ -57,6 +57,8 @@ class MeterController extends Controller
      */
     public function destroy(Meter $meter)
     {
+        abort_if($meter->counters()->count(), 406);
+
         $meter->delete();
 
         return response()->noContent();

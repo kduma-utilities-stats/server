@@ -41,6 +41,8 @@ class CounterController extends Controller
      */
     public function destroy(Counter $counter)
     {
+        abort_if($counter->values()->count(), 406);
+
         $counter->delete();
 
         return response()->noContent();

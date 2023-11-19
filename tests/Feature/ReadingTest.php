@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Value;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Reading;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -387,7 +388,31 @@ class ReadingTest extends TestCase
             ->assertNoContent();
 
         $this->assertDatabaseMissing('readings', [
-            'id' => $reading->prefixed_id,
+            'prefixed_id' => $reading->prefixed_id,
+        ]);
+    }
+
+    public function test_cant_destroy_reading_with_values(): void
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $reading = Reading::factory()
+            ->recycle($user)
+            ->create();
+
+        Value::factory()
+            ->recycle($reading)
+            ->create();
+
+        $response = $this
+            ->deleteJson('/api/reading/'.$reading->prefixed_id);
+
+        $response
+            ->assertNotAcceptable();
+
+        $this->assertDatabaseHas('readings', [
+            'prefixed_id' => $reading->prefixed_id,
         ]);
     }
 

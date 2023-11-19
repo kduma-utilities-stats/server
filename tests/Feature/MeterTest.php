@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Counter;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Meter;
 use Tests\TestCase;
@@ -261,6 +262,30 @@ class MeterTest extends TestCase
             ->assertNoContent();
 
         $this->assertDatabaseMissing('meters', [
+            'prefixed_id' => $meter->prefixed_id,
+        ]);
+    }
+
+    public function test_cant_destroy_meter_with_counters(): void
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user);
+
+        $meter = Meter::factory()
+            ->recycle($user)
+            ->create();
+
+        Counter::factory()
+            ->recycle($meter)
+            ->create();
+
+        $response = $this
+            ->deleteJson('/api/meter/'.$meter->prefixed_id);
+
+        $response
+            ->assertNotAcceptable();
+
+        $this->assertDatabaseHas('meters', [
             'prefixed_id' => $meter->prefixed_id,
         ]);
     }
