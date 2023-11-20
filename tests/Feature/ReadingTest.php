@@ -55,6 +55,7 @@ class ReadingTest extends TestCase
                     'performed_on' => $reading->performed_on,
                     'user_id' => $reading->user->prefixed_id,
                     'notes' => $reading->notes,
+                    'values_count' => $reading->values()->count(),
                 ])->toArray()
             ]);
     }
@@ -95,6 +96,7 @@ class ReadingTest extends TestCase
                     'performed_on' => now(),
                     'user_id' => $reading->user->prefixed_id,
                     'notes' => null,
+                    'values_count' => $reading->values()->count(),
                 ]
             ]);
     }
@@ -121,6 +123,7 @@ class ReadingTest extends TestCase
                     'performed_on' => now(),
                     'user_id' => $reading->user->prefixed_id,
                     'notes' => 'My Notes',
+                    'values_count' => $reading->values()->count(),
                 ]
             ]);
     }
@@ -144,6 +147,7 @@ class ReadingTest extends TestCase
                     'performed_on' => now(),
                     'user_id' => $reading->user->prefixed_id,
                     'notes' => $reading->notes,
+                    'values_count' => $reading->values()->count(),
                 ]
             ]);
     }
@@ -183,6 +187,7 @@ class ReadingTest extends TestCase
                     'performed_on' => $reading->performed_on,
                     'user_id' => $reading->user->prefixed_id,
                     'notes' => $reading->notes,
+                    'values_count' => $reading->values()->count(),
                 ]
             ]);
     }
@@ -240,6 +245,7 @@ class ReadingTest extends TestCase
                     'performed_on' => now(),
                     'user_id' => $reading->user->prefixed_id,
                     'notes' => 'My Note',
+                    'values_count' => $reading->values()->count(),
                 ]
             ]);
     }
@@ -269,6 +275,7 @@ class ReadingTest extends TestCase
                     'performed_on' => $reading->performed_on,
                     'user_id' => $reading->user->prefixed_id,
                     'notes' => 'My New Note',
+                    'values_count' => $reading->values()->count(),
                 ]
             ]);
     }
@@ -306,6 +313,7 @@ class ReadingTest extends TestCase
                     'performed_on' => $reading->performed_on,
                     'user_id' => $reading->user->prefixed_id,
                     'notes' => null,
+                    'values_count' => $reading->values()->count(),
                 ]
             ]);
     }
@@ -332,6 +340,7 @@ class ReadingTest extends TestCase
                     'performed_on' => $reading->performed_on,
                     'user_id' => $reading->user->prefixed_id,
                     'notes' => $reading->notes,
+                    'values_count' => $reading->values()->count(),
                 ]
             ]);
     }

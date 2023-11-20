@@ -19,6 +19,7 @@ class ReadingResource extends JsonResource
             'user_id' => $this->user->prefixed_id,
             'performed_on' => $this->performed_on,
             'notes' => $this->notes,
+            'values_count' => $this->whenCounted('values', $this->values_count),
         ];
     }
 }

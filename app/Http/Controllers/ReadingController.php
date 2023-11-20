@@ -23,7 +23,10 @@ class ReadingController extends Controller
      */
     public function index(Request $request)
     {
-        return ReadingResource::collection($request->user()->readings);
+        $resource = $request->user()->readings()
+            ->withCount('values as values_count')
+            ->get();
+        return ReadingResource::collection($resource);
     }
 
     /**
@@ -31,7 +34,9 @@ class ReadingController extends Controller
      */
     public function store(StoreReadingRequest $request)
     {
-        return new ReadingResource($request->user()->readings()->create($request->validated()));
+        $resource = $request->user()->readings()->create($request->validated());
+        $resource->loadCount('values as values_count');
+        return new ReadingResource($resource);
     }
 
     /**
@@ -39,6 +44,8 @@ class ReadingController extends Controller
      */
     public function show(Reading $reading)
     {
+        $reading->loadCount('values as values_count');
+
         return new ReadingResource($reading);
     }
 
@@ -47,6 +54,8 @@ class ReadingController extends Controller
      */
     public function update(UpdateReadingRequest $request, Reading $reading)
     {
+        $reading->loadCount('values as values_count');
+
         $reading->update($request->validated());
 
         return new ReadingResource($reading);
