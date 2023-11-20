@@ -24,7 +24,10 @@ class MeterCounterController extends Controller
      */
     public function index(Meter $meter)
     {
-        return CounterResource::collection($meter->counters);
+        $resource = $meter->counters()
+            ->withCount('values as values_count')
+            ->get();
+        return CounterResource::collection($resource);
     }
 
     /**
@@ -32,6 +35,10 @@ class MeterCounterController extends Controller
      */
     public function store(StoreCounterRequest $request, Meter $meter)
     {
-        return new CounterResource($meter->counters()->create($request->validated()));
+        $resource = $meter->counters()->create($request->validated());
+
+        $resource->loadCount('values as values_count');
+
+        return new CounterResource($resource);
     }
 }

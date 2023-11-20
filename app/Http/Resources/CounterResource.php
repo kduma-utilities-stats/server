@@ -19,6 +19,7 @@ class CounterResource extends JsonResource
             'name' => $this->name,
             'barcode' => $this->barcode,
             'meter_id' => $this->meter->prefixed_id,
+            'values_count' => $this->whenCounted('values', $this->values_count),
         ];
     }
 }

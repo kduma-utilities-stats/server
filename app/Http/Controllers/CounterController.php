@@ -23,6 +23,8 @@ class CounterController extends Controller
      */
     public function show(Counter $counter)
     {
+        $counter->loadCount('values as values_count');
+
         return new CounterResource($counter);
     }
 
@@ -31,6 +33,8 @@ class CounterController extends Controller
      */
     public function update(UpdateCounterRequest $request, Counter $counter)
     {
+        $counter->loadCount('values as values_count');
+
         $counter->update($request->validated());
 
         return new CounterResource($counter);
