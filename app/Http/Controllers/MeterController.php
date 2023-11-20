@@ -23,7 +23,11 @@ class MeterController extends Controller
      */
     public function index(Request $request)
     {
-        return MeterResource::collection($request->user()->meters);
+        $resource = $request->user()->meters()
+            ->withCount('counters as counters_count')
+            ->get();
+
+        return MeterResource::collection($resource);
     }
 
     /**
@@ -31,7 +35,9 @@ class MeterController extends Controller
      */
     public function store(StoreMeterRequest $request)
     {
-        return new MeterResource($request->user()->meters()->create($request->validated()));
+        $resource = $request->user()->meters()->create($request->validated());
+        $resource->loadCount('counters as counters_count');
+        return new MeterResource($resource);
     }
 
     /**
@@ -39,6 +45,8 @@ class MeterController extends Controller
      */
     public function show(Meter $meter)
     {
+        $meter->loadCount('counters as counters_count');
+
         return new MeterResource($meter);
     }
 
@@ -47,6 +55,8 @@ class MeterController extends Controller
      */
     public function update(UpdateMeterRequest $request, Meter $meter)
     {
+        $meter->loadCount('counters as counters_count');
+
         $meter->update($request->validated());
 
         return new MeterResource($meter);

@@ -53,6 +53,7 @@ class MeterTest extends TestCase
                     'id' => $meter->prefixed_id,
                     'name' => $meter->name,
                     'user_id' => $meter->user->prefixed_id,
+                    'counters_count' => $meter->counters()->count(),
                 ])->toArray()
             ]);
     }
@@ -92,6 +93,7 @@ class MeterTest extends TestCase
                     'id' => $meter->prefixed_id,
                     'name' => 'Test Meter',
                     'user_id' => $meter->user->prefixed_id,
+                    'counters_count' => $meter->counters()->count(),
                 ]
             ]);
     }
@@ -128,6 +130,7 @@ class MeterTest extends TestCase
                     'id' => $meter->prefixed_id,
                     'name' => $meter->name,
                     'user_id' => $meter->user->prefixed_id,
+                    'counters_count' => $meter->counters()->count(),
                 ]
             ]);
     }
@@ -181,6 +184,7 @@ class MeterTest extends TestCase
                     'id' => $meter->prefixed_id,
                     'name' => 'New Name',
                     'user_id' => $meter->user->prefixed_id,
+                    'counters_count' => $meter->counters()->count(),
                 ]
             ]);
     }
@@ -206,6 +210,7 @@ class MeterTest extends TestCase
                     'id' => $meter->prefixed_id,
                     'name' => $meter->name,
                     'user_id' => $meter->user->prefixed_id,
+                    'counters_count' => $meter->counters()->count(),
                 ]
             ]);
     }

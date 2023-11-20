@@ -18,6 +18,7 @@ class MeterResource extends JsonResource
             'id' => $this->prefixed_id,
             'name' => $this->name,
             'user_id' => $this->user->prefixed_id,
+            'counters_count' => $this->whenCounted('counters', $this->counters_count),
         ];
     }
 }
